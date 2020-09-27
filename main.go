@@ -127,5 +127,13 @@ func main() {
 		b.Send(m.Sender, "Type in /status to get the current utilization.")
 	})
 
+	b.Handle("/locations", func(m *tb.Message) {
+		locations := [...]string{"https://goo.gl/maps/vkEjWbFW8QLunnPw8", "https://goo.gl/maps/3Ay6Q2VG7e5KNfRD7",
+			"https://goo.gl/maps/rPqXHqGN4yH3DvC4A", "https://goo.gl/maps/6ezJL91bBAHK1WGT9"}
+		for _, location := range locations {
+			b.Send(m.Sender, location)
+		}
+	})
+
 	b.Start()
 }
