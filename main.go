@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"sort"
@@ -12,39 +11,46 @@ import (
 
 	"github.com/gocolly/colly"
 	tb "gopkg.in/tucnak/telebot.v2"
-	"gopkg.in/yaml.v2"
 )
 
 var boulderbars map[string]int = make(map[string]int)
 var lastRefresh time.Time = time.Now()
 
 func collect() {
-	// Instantiate default collector
 	c := colly.NewCollector(
-		// Visit only domains: hackerspaces.org, wiki.hackerspaces.org
 		colly.AllowedDomains("shop.boulderbar.net:8080", "shop.boulderbar-sbg.at:8081"),
 	)
 
-	// On every a element which has href attribute call callback
 	c.OnHTML("html body div.progress-radial2", func(e *colly.HTMLElement) {
-		gym := e.Text
-		gymName := strings.TrimSpace(gym[:len(gym)-len("plätze frei")-2])
-		freePlaces, err := strconv.Atoi(gym[len(gym)-len("plätze frei")-2 : len(gym)-len("plätze frei")])
-		if err != nil {
-			freePlaces = -1
+		gym := strings.ToLower(e.Text)
+		gymName := "unknown"
+		if strings.Contains(gym, "hauptbahnhof") {
+			gymName = "Hauptbahnhof"
 		}
-		if freePlaces > 49 {
-			gymName = gymName[:len(gymName)-len("über")]
+		if strings.Contains(gym, "hannovergasse") {
+			gymName = "Hannovergasse"
+		}
+		if strings.Contains(gym, "wienerberg") {
+			gymName = "Wienerberg"
+		}
+		if strings.Contains(gym, "salzburg") {
+			gymName = "Salzburg"
+		}
+		freePlaces, err := strconv.Atoi(gym[len(gymName) : len(gym)-len("plätze frei")])
+		if err != nil {
+			freePlaces, err = strconv.Atoi(gym[len(gymName)+len("über")+1 : len(gym)-len("plätze frei")])
+			if err != nil {
+				freePlaces = -1
+			}
+
 		}
 		boulderbars[gymName] = freePlaces
 	})
 
-	// Before making a request print "Visiting ..."
 	c.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
 	})
 
-	// Start scraping on https://hackerspaces.org
 	c.Visit("https://shop.boulderbar.net:8080/modules/bbext/CurrentCustomer.php")
 	c.Visit("https://shop.boulderbar-sbg.at:8081/modules/bbext/CurrentCustomer.php")
 }
@@ -81,27 +87,8 @@ func test() {
 	fmt.Println(createResponse())
 }
 
-type conf struct {
-	Token string `yaml:"token"`
-}
-
-func (c *conf) getConf() *conf {
-
-	yamlFile, err := ioutil.ReadFile("conf.yaml")
-	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
-	}
-	err = yaml.Unmarshal(yamlFile, c)
-	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
-	}
-
-	return c
-}
-
 func main() {
-	//var c conf
-	//c.getConf()
+
 	var (
 		port      = os.Getenv("PORT")
 		publicURL = os.Getenv("PUBLIC_URL")
