@@ -62,7 +62,7 @@ func createResponse() string {
 		responseSlice[0] = "Current available places\n\n"
 	}
 	for key, value := range boulderbars {
-		if value > 0 {
+		if value > -1 {
 			builder.WriteString(key)
 			builder.WriteString(": ")
 			if value > 49 {
