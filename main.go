@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -97,11 +98,11 @@ func (c *conf) getConf() *conf {
 }
 
 func main() {
-	var c conf
-	c.getConf()
+	//var c conf
+	//c.getConf()
 
 	b, err := tb.NewBot(tb.Settings{
-		Token:  c.Token,
+		Token:  os.Getenv("TOKEN"),
 		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
 	})
 
