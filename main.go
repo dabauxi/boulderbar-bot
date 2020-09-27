@@ -113,7 +113,7 @@ func main() {
 		b.Send(m.Sender, "This is a bot to fetch the available places at the boulderbars in Vienna from boulderbar.net.")
 		b.Send(m.Sender, "Due to the COVID-19 pandemic only a limited amount of people are allowed at a gym at the same time.")
 		b.Send(m.Sender, "Type in /status to get the current available places.")
-		b.Send(m.Sender, "Type in /locations to get the bouldbar locations.")
+		b.Send(m.Sender, "Type in /locations to get the boulderbar locations.")
 	})
 
 	b.Handle("/status", func(m *tb.Message) {
@@ -125,7 +125,7 @@ func main() {
 	})
 
 	b.Handle("/help", func(m *tb.Message) {
-		b.Send(m.Sender, "Type in /status to get the current utilization.\nType in /locations to get the bouldbar locations.")
+		b.Send(m.Sender, "Type in /status to get the current utilization.\nType in /locations to get the boulderbar locations.")
 	})
 
 	b.Handle("/locations", func(m *tb.Message) {
