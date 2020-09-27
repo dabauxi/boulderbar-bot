@@ -124,7 +124,7 @@ func main() {
 	})
 
 	b.Handle("/help", func(m *tb.Message) {
-		b.Send(m.Sender, "Type in /status to get the current utilization.")
+		b.Send(m.Sender, "Type in /status to get the current utilization.\n Type in /locations to get the bouldbar locations.")
 	})
 
 	b.Handle("/locations", func(m *tb.Message) {
