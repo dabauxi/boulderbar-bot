@@ -56,15 +56,17 @@ func createResponse() string {
 		responseSlice[0] = "Current available places\n\n"
 	}
 	for key, value := range boulderbars {
-		builder.WriteString(key)
-		builder.WriteString(": ")
-		if value > 49 {
-			builder.WriteString("more than ")
+		if value > 0 {
+			builder.WriteString(key)
+			builder.WriteString(": ")
+			if value > 49 {
+				builder.WriteString("more than ")
+			}
+			builder.WriteString(strconv.Itoa(value))
+			builder.WriteString("\n")
+			responseSlice = append(responseSlice, builder.String())
+			builder.Reset()
 		}
-		builder.WriteString(strconv.Itoa(value))
-		builder.WriteString("\n")
-		responseSlice = append(responseSlice, builder.String())
-		builder.Reset()
 	}
 	builder.Reset()
 	sort.Strings(responseSlice)
