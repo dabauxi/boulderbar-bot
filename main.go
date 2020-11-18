@@ -82,11 +82,6 @@ func createResponse() string {
 	return builder.String()
 }
 
-func test() {
-	collect()
-	fmt.Println(createResponse())
-}
-
 func main() {
 
 	var (
