@@ -14,5 +14,4 @@ require (
 	golang.org/x/net v0.0.0-20200927032502-5d4f70055728 // indirect
 	google.golang.org/appengine v1.6.6 // indirect
 	gopkg.in/tucnak/telebot.v2 v2.3.4
-	gopkg.in/yaml.v2 v2.2.2
 )
